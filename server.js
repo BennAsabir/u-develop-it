@@ -1,3 +1,4 @@
+const sqlite3 = require('sqlite3').verbose();
 const express = require('express');
 
 
@@ -8,6 +9,14 @@ const app = express();
 // Express middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+// Connect to database
+const db = new sqlite3.Database('./db/election.db', err => {
+  if (err) {
+    return console.error(err.message);
+  }
+
+  console.log('Connected to the election database.');
+});
 
 
 app.get('/', (req, res) => {
@@ -21,6 +30,9 @@ app.use((req, res) => {
   });
 
 
-app.listen(PORT, () => {
+// Start server after DB connection
+db.on('open', () => {
+  app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
+});
