@@ -24,6 +24,24 @@ app.get('/', (req, res) => {
       message: 'Hello World'
     });
   });
+
+  // Delete a candidate
+db.run(`DELETE FROM candidates WHERE id = ?`, 1, function(err, result) {
+  if (err) {
+    console.log(err);
+  }
+  console.log(result, this, this.changes);
+});
+  // GET a single candidate
+// db.get(`SELECT * FROM candidates WHERE id = 1`, (err, row) => {
+  // if(err) {
+    // console.log(err);
+  // }
+  // console.log(row);
+// });
+  // db.all(`SELECT * FROM candidates`, (err, rows) => {
+   // console.log(rows);
+ // });
 // Default response for any other request(Not Found) Catch all
 app.use((req, res) => {
     res.status(404).end();
